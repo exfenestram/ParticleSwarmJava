@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+<project name="psojava" default="jar">
+  
+
+  <property environment="env"/>
+  <path id="library-classpath">  
+    <fileset dir="lib">
+      <include name="*.jar"/>
+    </fileset>
+
+  </path>
+  
+    <target name="clean" description="remove intermediate files">
+        <delete dir="classes"/>
+    </target>
+    <target name="clobber" depends="clean" description="remove all artifact files">
+        <delete file="psojava.jar"/>
+    </target>
+    <target name="compile" depends="clobber" description="compile the Java source code to class files">
+        <mkdir dir="classes"/>
+        <javac srcdir="src" destdir="classes" debug="true"
+	  includeantruntime="false">
+	  <classpath refid="library-classpath"/>
+	</javac>
+    </target>
+    <target name="jar" depends="compile" description="create a Jar file for the application">
+        <jar destfile="psojava.jar">
+            <fileset dir="classes" includes="**/*.class"/>
+        </jar>
+    </target>
+
+    <!-- Generate javadocs for current project into ${doc.dir} -->
+    <target name="javadoc" description="generate documentation">
+      <javadoc sourcepath="src" destdir="doc"/>
+    </target>
+</project>
