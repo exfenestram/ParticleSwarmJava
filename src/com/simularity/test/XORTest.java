@@ -22,8 +22,8 @@ public class XORTest {
 			maxs[i] = 100.0;
 		}
 
-		PSO pso = new PSO(mins, maxs, 0.3, 0.3, 0.3);
-		PSO.Swarm swarm = pso.new Swarm(20, eval);
+		PSO pso = new PSO(mins, maxs);
+		PSO.Swarm swarm = pso.new Swarm(20, eval, 0.3, 0.3, 0.3);
 
 		for (int i = 0; i < 1000; i++) {
 			System.out.printf("Iteration %d - Error: %f\n", i, swarm.iteration());

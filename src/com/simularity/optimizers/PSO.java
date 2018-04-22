@@ -27,6 +27,7 @@ SOFTWARE.
 package com.simularity.optimizers;
 
 import java.util.function.BiPredicate;
+import java.util.function.Function;
 
 /**
  * PSO performs the Particle Swarm Optimization. Some number of "particles"
@@ -53,32 +54,15 @@ public class PSO {
 	 */
 	protected final double [] maxs;
 
-	/** 
-	 * The Omega parameter
-	 */
-	protected double omega;
-
-	/**
-	 * The Phi p parameter
-	 */
-	protected double phi_p;
-
-	/**
-	 * The Phi g parameter
-	 */
-	protected double phi_g;
 
 	/**
 	 * Construct a PSO field. This generates the Map and initialized the parameters
 	 * but does not actually execute the algorithm
 	 * @param mins The minimum map coordinates for each dimension of the search
 	 * @param maxs The maximum map coordinates for each dimension of the search
-	 * @param omega The PSO Omega parameter
-	 * @param phi_p The PSO Phi P parameter
-	 * @param phi_g The PSO Phi G parameter
 	 */
 	
-	public PSO(double [] mins, double [] maxs, double omega, double phi_p, double phi_g) {
+	public PSO(double [] mins, double [] maxs) {
 
 		this.mins = mins;
 		this.maxs = maxs;
@@ -89,9 +73,6 @@ public class PSO {
 
 		this.order = this.mins.length;
 		
-		this.omega = omega;
-		this.phi_p = phi_p;
-		this.phi_g = phi_g;
 	}
 
 	/**
@@ -153,16 +134,43 @@ public class PSO {
 
 		private double top_score;
 
+		/** 
+		 * The Omega parameter
+		 */
+		protected double omega;
+		
+		/**
+		 * The Phi p parameter
+		 */
+		protected double phi_p;
+		
+		/**
+		 * The Phi g parameter
+		 */
+		protected double phi_g;
+		
+		
 		/**
 		 * Construct a Swarm
+		 * @param n_particles The number of particles in this swarm
+		 * @param Evaluator The evaluator for this swarm
+		 * @param omega The PSO Omega parameter
+		 * @param phi_p The PSO Phi P parameter
+		 * @param phi_g The PSO Phi G parameter
+		 
 		 */
 
-		public Swarm(int n_particles, Evaluator evaluator) {
+		public Swarm(int n_particles, Evaluator evaluator,
+			     double omega, double phi_p, double phi_g) {
 			// We need at least 2 particles
 			if (n_particles <= 1) {
 				throw new IllegalArgumentException("PSO.Swarm - Particle count must be greater than 1");
 			}
 			swarm_order = n_particles;
+
+			this.omega = omega;
+			this.phi_p = phi_p;
+			this.phi_g = phi_g;
 			
 			positions = new double[n_particles][];
 			velocity = new double[n_particles][];
@@ -220,6 +228,7 @@ public class PSO {
 		/**
 		 * Evaluate all particles and set leader to the max or min value
 		 */
+		
 		private void evaluate(boolean first) {
 			BiPredicate<Double, Double>  replace;
 			if (evaluator.minimize()) {
@@ -232,7 +241,7 @@ public class PSO {
 					return a.compareTo(b) > 0;
 				};
 			}
-
+		
 			// Initialize our results to zero
 			curr_score[0] = evaluator.evaluate(positions[0]);
 			if (first || replace.test(new Double(curr_score[0]), new Double(best_score[0]))) {
@@ -251,14 +260,14 @@ public class PSO {
 					best_score[i] = val;
 				}
 			}
-
+			
 			if (first || replace.test(new Double(best_score[leader]), new Double(top_score))){
 				top_score = best_score[leader];
 				best_pos = positions[leader];
 			}
 					
 		}
-
+		
 		private void update_velocity(int particle) {
 			double [] vel = velocity[particle];
 			double rp = Math.random();

@@ -16,8 +16,8 @@ public class LocTest {
 	public static void main(String [] args) {
 		double [] mins = {-10000.0, -10000.0};
 		double [] maxs = {10000.0, 10000.0};
-		PSO pso = new PSO(mins, maxs, 0.7, 1.8, 1.8);
-		PSO.Swarm swarm = pso.new Swarm(20, eval);
+		PSO pso = new PSO(mins, maxs);
+		PSO.Swarm swarm = pso.new Swarm(20, eval, 0.7, 1.0, 1.0);
 		for (int i = 0; i < 100000; i++) {
 			System.out.printf("Iteration %d = %f\n", i, swarm.iteration());
 		}
