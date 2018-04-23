@@ -1,4 +1,4 @@
-// Evaluator.java - Interface to perform evaluation of a particle
+// SwarmEvaluator.java - Interface to perform evaluation of all the particles in a Swarn
 // Copyright 2018, Simularity, Inc.
 
 /*
@@ -27,10 +27,9 @@ SOFTWARE.
 
 package com.simularity.optimizers;
 
+import java.util.Map;
+
 @FunctionalInterface
-public interface Evaluator {
-	public double evaluate(double [] particle);
-         default boolean minimize() {
-		 return true;
-	 }
+public interface SwarmEvaluator {
+	public Map<Integer, Double>  evaluate(Iterable<Integer> particles);
 }

@@ -1,4 +1,4 @@
-// Evaluator.java - Interface to perform evaluation of a particle
+// BasicSwarmEvaluator.java - Linear evaluation of all the particles in a Swarn
 // Copyright 2018, Simularity, Inc.
 
 /*
@@ -27,10 +27,33 @@ SOFTWARE.
 
 package com.simularity.optimizers;
 
-@FunctionalInterface
-public interface Evaluator {
-	public double evaluate(double [] particle);
-         default boolean minimize() {
-		 return true;
-	 }
+import java.util.Map;
+import java.util.HashMap;
+
+/**
+ * Evaluate all particles an return a map of Particle ID -> Value
+ */
+
+
+public class BasicSwarmEvaluator implements SwarmEvaluator{
+	private PSO.Swarm swarm;
+	/**
+	 */
+	public BasicSwarmEvaluator(PSO.Swarm swarm) {
+		this.swarm = swarm;
+	}
+	
+	public Map<Integer, Double>  evaluate(Iterable<Integer> particles) {
+		Map<Integer, Double> res = new HashMap<Integer, Double>();
+		for (Integer particle : particles) {
+			int p = particle.intValue();
+			double [] pos = swarm.getParticle(p);
+			if (pos == null) {
+				throw new IllegalArgumentException(String.format("BasicSwarmEvaluator: position %d not valid", p));
+			}				   
+			Double val = new Double(swarm.evaluate(pos));
+			res.put(particle, val);
+		}
+		return res;
+	}
 }
