@@ -164,6 +164,15 @@ public class PSO {
 		 */
 
 		private SwarmEvaluator swarmEval;
+		private double curr_score(int particle) {
+			Integer key = new Integer(particle);
+			Double val = scores.get(key);
+			if (val != null) {
+				return val.doubleValue();
+			}
+			throw new IllegalArgumentException("PSO.Swarm - invalid particle");
+		}
+		
 		
 		/**
 		 * Construct a Swarm
@@ -175,15 +184,6 @@ public class PSO {
 		 
 		 */
 
-		private double curr_score(int particle) {
-			Integer key = new Integer(particle);
-			Double val = scores.get(key);
-			if (val != null) {
-				return val.doubleValue();
-			}
-			throw new IllegalArgumentException("PSO.Swarm - invalid particle");
-		}
-		
 
 		public Swarm(int n_particles, Evaluator evaluator, SwarmEvaluator swarmEval,
 			     double omega, double phi_p, double phi_g) {
