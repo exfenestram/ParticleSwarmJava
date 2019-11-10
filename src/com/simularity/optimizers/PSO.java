@@ -77,6 +77,11 @@ public class PSO {
 		
 	}
 
+	public Swarm newSwarm(int n_particles, Evaluator evaluator, SwarmEvaluator swarmEval,
+			     double omega, double phi_p, double phi_g) {
+		return new Swarm(n_particles, evaluator, swarmEval, omega, phi_p, phi_g);
+	}
+
 	/**
 	 * This class actually implements the Particle Swarm. The Containing class is primarily
 	 * for containing the map parameters (extents, algorithm tuning, etc.) while this class
